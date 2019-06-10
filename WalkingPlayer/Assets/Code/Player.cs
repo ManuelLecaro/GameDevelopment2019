@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Transform trans;
     public Rigidbody2D body;
 
     public float walkingSpeed;
     public float jumpSpeed;
+
+    private void Awake()
+    {
+        trans = this.transform;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +42,19 @@ public class Player : MonoBehaviour
             }
             v.x = speed;
             body.velocity = v;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var otherObject = collision.collider.gameObject;
+        if (otherObject.tag == "Magnifier")
+        {
+            var scale = this.transform.localScale;
+            scale.y *= 2;
+            this.transform.localScale = scale;
+            //otherObject.SetActive(false);
+            //GameObject.Destroy(otherObject);
         }
     }
 }
